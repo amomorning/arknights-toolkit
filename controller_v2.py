@@ -19,11 +19,11 @@ class AdbController:
             "c": self.press_confirm,
         }
 
-    def _execute(self, cmd, retry=10):
+    def _execute(self, cmd, retry=3):
         for _ in range(max(1, retry)):
             if len(os.popen(cmd).read()) == 0:
                 break
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def response(self, key : Key):
         key= str(key).strip('\'')
