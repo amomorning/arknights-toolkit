@@ -13,6 +13,7 @@ class AdbController:
         self.keyboard2func = {
             "q": self.press_quit,
             "a": self.press_accelerate,
+            "Key.space": self.press_pause,
             "s": self.press_pause,
             "w": self.press_retreat,
             "e": self.press_skill,
