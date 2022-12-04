@@ -14,7 +14,6 @@ class AdbController:
             "q": self.press_quit,
             "a": self.press_accelerate,
             "d": self.press_pause_via_tap,
-            "Key.space": self.press_pause_via_keyevent,
             "s": self.press_pause_via_keyevent,
             "w": self.press_retreat,
             "e": self.press_skill,
@@ -31,6 +30,7 @@ class AdbController:
         key= str(key).strip('\'')
         logging.info("+" + key)
         if key in self.keyboard2func:
+            logging.info(self.keyboard2func[key])
             self.keyboard2func[key]()
 
     def looping_press_confirm(self, time_interval=2.0):
