@@ -32,6 +32,12 @@ class AdbController:
         if key in self.keyboard2func:
             self.keyboard2func[key]()
 
+    def looping_press_confirm(self, time_interval=2.0):
+        import time
+        while True:
+            self.press_confirm()
+            time.sleep(time_interval)
+
     def press_quit(self):
         self._execute("adb shell input tap 100 50")
     def press_accelerate(self):

@@ -18,12 +18,8 @@ def main():
 @click.option('--time-interval', default=2.0)
 def run(mode, time_interval):
     if mode == 'adb':
-        import os
-        import time
         adb_controller = AdbController()
-        while True:
-            adb_controller.press_confirm()
-            time.sleep(time_interval)
+        adb_controller.looping_press_confirm(time_interval)
     elif mode == 'screen':
         import pyautogui
         pyautogui.PAUSE = time_interval
