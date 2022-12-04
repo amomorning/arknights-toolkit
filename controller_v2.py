@@ -6,6 +6,7 @@ import logging
 
 from pynput.keyboard import Key, Listener
 from AppKit import NSWorkspace
+import threading
 
 
 class AdbController:
@@ -18,7 +19,14 @@ class AdbController:
             "w": self.press_retreat,
             "e": self.press_skill,
             "c": self.press_confirm,
+            "l": self.trigger_looping_press_confirm,
         }
+        self._looping_press_confirm_event = threading.Event()
+        self._looping_press_confirm_thread = threading.Thread(
+            target = self._looping_press_confirm,
+            daemon=True
+        )
+        self._looping_press_confirm_thread.start()
 
     def _execute(self, cmd, retry=3):
         for _ in range(max(1, retry)):
@@ -26,17 +34,23 @@ class AdbController:
                 break
             time.sleep(0.01)
 
+    def _looping_press_confirm(self, time_interval=2.0):
+        while True:
+            self._looping_press_confirm_event.wait()
+            self.press_confirm()
+            time.sleep(time_interval)
+
+    def trigger_looping_press_confirm(self):
+        if self._looping_press_confirm_event.is_set():
+            self._looping_press_confirm_event.clear()
+        else:
+            self._looping_press_confirm_event.set()
+
     def response(self, key : Key):
         key= str(key).strip('\'')
         logging.info("+" + key)
         if key in self.keyboard2func:
             self.keyboard2func[key]()
-
-    def looping_press_confirm(self, time_interval=2.0):
-        import time
-        while True:
-            self.press_confirm()
-            time.sleep(time_interval)
 
     def press_quit(self):
         self._execute("adb shell input tap 100 50")
