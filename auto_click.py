@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+
 import click
 import logging
+
+from controller_v2 import AdbController
 
 @click.group()
 def main():
@@ -17,8 +20,9 @@ def run(mode, time_interval):
     if mode == 'adb':
         import os
         import time
+        adb_controller = AdbController()
         while True:
-            os.popen('adb shell input tap 1650 960')
+            adb_controller.press_confirm()
             time.sleep(time_interval)
     elif mode == 'screen':
         import pyautogui
