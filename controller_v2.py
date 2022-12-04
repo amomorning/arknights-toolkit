@@ -36,7 +36,8 @@ class AdbController:
     def press_accelerate(self):
         self._execute("adb shell input tap 1600 50")
     def press_pause(self):
-        self._execute("adb shell input tap 1800 50")
+        # (1800, 50)
+        self._execute("adb shell input keyevent 4")
     def press_retreat(self):
         self._execute("adb shell input tap 900 350")
     def press_skill(self):
