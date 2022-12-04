@@ -13,8 +13,9 @@ class AdbController:
         self.keyboard2func = {
             "q": self.press_quit,
             "a": self.press_accelerate,
-            "Key.space": self.press_pause,
-            "s": self.press_pause,
+            "d": self.press_pause_via_tap,
+            "Key.space": self.press_pause_via_keyevent,
+            "s": self.press_pause_via_keyevent,
             "w": self.press_retreat,
             "e": self.press_skill,
             "c": self.press_confirm,
@@ -42,8 +43,9 @@ class AdbController:
         self._execute("adb shell input tap 100 50")
     def press_accelerate(self):
         self._execute("adb shell input tap 1600 50")
-    def press_pause(self):
-        # (1800, 50)
+    def press_pause_via_tap(self):
+        self._execute("adb shell input tap 1800 50")
+    def press_pause_via_keyevent(self):
         self._execute("adb shell input keyevent 4")
     def press_retreat(self):
         self._execute("adb shell input tap 900 350")
