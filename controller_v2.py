@@ -30,7 +30,6 @@ class AdbController:
         key= str(key).strip('\'')
         logging.info("+" + key)
         if key in self.keyboard2func:
-            logging.info(self.keyboard2func[key])
             self.keyboard2func[key]()
 
     def looping_press_confirm(self, time_interval=2.0):
