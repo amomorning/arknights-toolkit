@@ -11,7 +11,7 @@
 ./arknights.sh
 
 # Open controller
-python controller.py
+./controller.py
 
 ```
 
