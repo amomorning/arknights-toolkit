@@ -19,7 +19,8 @@ class AdbController:
             "w": self.press_retreat,
             "e": self.press_skill,
             "c": self.press_confirm,
-            "l": self.trigger_looping_press_confirm,
+            "l": self.toggle_looping_press_confirm,
+            "m": self.toggle_mute,
         }
         self._looping_press_confirm_event = threading.Event()
         self._looping_press_confirm_thread = threading.Thread(
@@ -40,7 +41,7 @@ class AdbController:
             self.press_confirm()
             time.sleep(time_interval)
 
-    def trigger_looping_press_confirm(self):
+    def toggle_looping_press_confirm(self):
         if self._looping_press_confirm_event.is_set():
             self._looping_press_confirm_event.clear()
         else:
@@ -66,6 +67,8 @@ class AdbController:
         self._execute("adb shell input tap 1250 600")
     def press_confirm(self):
         self._execute("adb shell input tap 1650 960")
+    def toggle_mute(self):
+        self._execute("adb shell service call audio 9 i32 3 i32 101 i32 1", retry=0)
 
 
 class KeybaordMonitor:
