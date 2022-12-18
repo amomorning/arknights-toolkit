@@ -17,6 +17,7 @@
 
 ### Controller Operations
 
+- `cmd_r+0` Toggle On/Off the controller (default: **On**)
 - `q` Quit
 - `a` Accelerate
 - `d` Pause
@@ -25,3 +26,4 @@
 - `e` Skill
 - `c` Confirm
 - `l` Auto Confirm
+- `m` Mute Emulator

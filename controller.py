@@ -28,6 +28,7 @@ class AdbController:
             daemon=True
         )
         self._looping_press_confirm_thread.start()
+        self.power = True
 
     def _execute(self, cmd, retry=3):
         for _ in range(retry+1):
@@ -48,6 +49,7 @@ class AdbController:
             self._looping_press_confirm_event.set()
 
     def response(self, key : Key):
+        if not self.power: return
         key= str(key).strip('\'')
         logging.info("+" + key)
         if key in self.keyboard2func:
@@ -74,16 +76,28 @@ class AdbController:
 class KeybaordMonitor:
     def __init__(self):
         self.adb_controller = AdbController()
+        self.current = []
         with Listener(on_press=self.on_press, on_release=self.on_release) as listener:
             listener.join()
 
     def on_press(self, key : Key):
         # We should not make any response if the event is not from arknights.
         if NSWorkspace.sharedWorkspace().activeApplication()['NSApplicationName'] == "qemu-system-aarch64":
+            self.current.append(key)
             self.adb_controller.response(key)
 
     def on_release(self, key):
-        pass
+        if NSWorkspace.sharedWorkspace().activeApplication()['NSApplicationName'] == "qemu-system-aarch64":
+            if len(self.current) < 2: return
+            if self.current[0] == Key.cmd_r and str(self.current[1]).strip('\'') == '0':
+                self.adb_controller.power = not self.adb_controller.power                
+                if self.adb_controller.power:
+                    logging.info('adb_controller activated')
+                else:
+                    logging.info('adb_controller inactivated')
+                    
+
+            self.current = []
 
 if __name__ == '__main__':
     logger = logging.getLogger()
