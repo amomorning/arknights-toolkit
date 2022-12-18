@@ -88,7 +88,10 @@ class KeybaordMonitor:
 
     def on_release(self, key):
         if NSWorkspace.sharedWorkspace().activeApplication()['NSApplicationName'] == "qemu-system-aarch64":
-            if len(self.current) < 2: return
+            if len(self.current) < 2: 
+                self.current = []
+                return
+
             if self.current[0] == Key.cmd_r and str(self.current[1]).strip('\'') == '0':
                 self.adb_controller.power = not self.adb_controller.power                
                 if self.adb_controller.power:
